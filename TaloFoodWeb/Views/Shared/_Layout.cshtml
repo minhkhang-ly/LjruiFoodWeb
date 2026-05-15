@@ -1,0 +1,58 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var isMenuPage = string.Equals(controller, "Home", StringComparison.OrdinalIgnoreCase)
+        && string.Equals(action, "Menu", StringComparison.OrdinalIgnoreCase);
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TALO Food</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="site-logo" asp-controller="Home" asp-action="Index" aria-label="TALO Food">
+                <img class="site-logo__mark" src="~/images/logo-talo-food.svg" width="160" height="56" alt="TALO Food" />
+            </a>
+            <nav class="site-nav" aria-label="Chính">
+                <a asp-controller="Home" asp-action="Index">Home</a>
+                <a asp-controller="Home" asp-action="About">About</a>
+                <a asp-controller="Home" asp-action="Menu">Menu</a>
+                <a asp-controller="Home" asp-action="Review">Review</a>
+                <a asp-controller="Home" asp-action="Contact">Contact</a>
+                <a asp-controller="Home" asp-action="Blog">Blog</a>
+            </nav>
+            <div class="site-header__tools">
+                <button type="button" class="icon-btn" aria-label="Tìm kiếm"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <a class="icon-btn" href="#" aria-label="Giỏ hàng"><i class="fa-solid fa-cart-shopping"></i></a>
+                @if (isMenuPage)
+                {
+                    <a class="user-avatar-btn" href="#" aria-label="Hồ sơ người dùng">
+                        <img src="~/images/user-avatar.svg" width="36" height="36" alt="" />
+                    </a>
+                }
+                else
+                {
+                    <a class="icon-btn" href="#" aria-label="Hồ sơ người dùng"><i class="fa-solid fa-user"></i></a>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main class="site-main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <span>&copy; @DateTime.UtcNow.Year TALO Food — Bản demo giao diện tĩnh.</span>
+    </footer>
+</body>
+</html>
