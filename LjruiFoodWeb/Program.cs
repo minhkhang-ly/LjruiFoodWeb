@@ -46,6 +46,11 @@ builder.Services.AddAuthentication()
     {
         options.ClientId = "329767228308-55dv5cod17creqc0orl5kdpe3v3cmi0j" + ".apps.googleusercontent.com";
         options.ClientSecret = "GOCSPX-" + "esqNFI9SgEiKISHDYjauSBdkvQPj";
+    })
+    .AddFacebook(options =>
+    {
+        options.AppId = "582039182379124";
+        options.AppSecret = "e7492cfa7298642bb398f82a9382ac10";
     });
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -84,7 +89,7 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
+
 
 app.MapControllers();
 
@@ -94,7 +99,6 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

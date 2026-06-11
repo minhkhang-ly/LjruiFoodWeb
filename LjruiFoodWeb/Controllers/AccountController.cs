@@ -197,9 +197,9 @@ public class AccountController : Controller
         }
         else
         {
-            // Get email claim from Google
+            // Get email claim
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            var name = info.Principal.FindFirstValue(ClaimTypes.Name) ?? "Người dùng Google";
+            var name = info.Principal.FindFirstValue(ClaimTypes.Name) ?? $"Người dùng {info.LoginProvider}";
 
             if (email != null)
             {
@@ -227,7 +227,7 @@ public class AccountController : Controller
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "Lỗi khi tạo/liên kết tài khoản Google.");
+            ModelState.AddModelError(string.Empty, $"Lỗi khi tạo/liên kết tài khoản {info.LoginProvider}.");
             return RedirectToAction("DangNhap", new { ReturnUrl = returnUrl });
         }
     }

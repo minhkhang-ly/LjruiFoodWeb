@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Trang chủ";
 }
 
@@ -7,9 +7,18 @@
     <div class="hero__vignette" aria-hidden="true"></div>
     <div class="hero__inner">
         <div class="hero__copy">
+            <div class="hero__eyebrow"><i class="fa-solid fa-circle-check"></i> Chào mừng đến LjruiFood</div>
             <h1>ĐÓI BỤNG? ĐỪNG LO, ĐÃ CÓ LJRUI FOOD!</h1>
             <p class="lead">Đồ ăn nhanh, chuẩn vị ngon, phục vụ tốc hành — bạn chỉ cần thưởng thức!</p>
-            <a class="btn-gold" asp-controller="Home" asp-action="Menu">Đặt Món Ngay</a>
+            <div class="hero__cta-group">
+                <a class="btn-gold" asp-controller="Home" asp-action="Menu"><i class="fa-solid fa-utensils"></i> Đặt Món Ngay</a>
+                <a class="btn-outline" asp-controller="Home" asp-action="About"><i class="fa-solid fa-play"></i> Tìm hiểu thêm</a>
+            </div>
+            <div class="hero__badges">
+                <span><i class="fa-solid fa-shield-halved"></i> An toàn vệ sinh</span>
+                <span><i class="fa-solid fa-truck-fast"></i> Giao hàng 30 phút</span>
+                <span><i class="fa-solid fa-star"></i> 4.9/5 đánh giá</span>
+            </div>
         </div>
         <div class="hero__scene" aria-hidden="true">
             <div class="hero__beans">
@@ -26,6 +35,258 @@
             <img class="hero__item hero__item--fries" src="~/images/food-fries.svg" alt="" />
             <img class="hero__item hero__item--burger" src="~/images/food-hamburger.svg" alt="" />
             <img class="hero__item hero__item--dip" src="~/images/food-dip.svg" alt="" />
+        </div>
+    </div>
+    <div class="hero__scroll-hint" aria-hidden="true">
+        <span></span>
+    </div>
+</section>
+
+<!-- ===== STATS BANNER ===== -->
+<section class="stats-banner" aria-label="Thống kê">
+    <div class="stats-banner__inner">
+        <div class="stats-item">
+            <span class="stats-item__number">1,200+</span>
+            <span class="stats-item__label">Đơn hàng mỗi tháng</span>
+        </div>
+        <div class="stats-divider" aria-hidden="true"></div>
+        <div class="stats-item">
+            <span class="stats-item__number">50+</span>
+            <span class="stats-item__label">Món ăn đặc sắc</span>
+        </div>
+        <div class="stats-divider" aria-hidden="true"></div>
+        <div class="stats-item">
+            <span class="stats-item__number">98%</span>
+            <span class="stats-item__label">Khách hàng hài lòng</span>
+        </div>
+        <div class="stats-divider" aria-hidden="true"></div>
+        <div class="stats-item">
+            <span class="stats-item__number">5+</span>
+            <span class="stats-item__label">Năm kinh nghiệm</span>
+        </div>
+    </div>
+</section>
+
+<!-- ===== WHY LJRUIFOOD ===== -->
+<section class="why-section" aria-labelledby="why-title">
+    <div class="why-section__inner">
+        <div class="why-section__header">
+            <p class="why-section__eyebrow">Tại sao chọn chúng tôi</p>
+            <h2 id="why-title">Trải Nghiệm <span class="text-gold">Đẳng Cấp</span></h2>
+            <p class="why-section__sub">Chúng tôi không chỉ bán đồ ăn — chúng tôi mang đến một trải nghiệm ẩm thực đáng nhớ cho mỗi thực khách.</p>
+        </div>
+        <div class="why-grid">
+            <div class="why-card">
+                <div class="why-card__icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+                <h3>Tươi mới mỗi ngày</h3>
+                <p>Nguyên liệu được tuyển chọn kỹ lưỡng, chế biến trong ngày — đảm bảo hương vị tươi ngon, an toàn vệ sinh thực phẩm.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-card__icon"><i class="fa-solid fa-bolt"></i></div>
+                <h3>Giao hàng tốc hành</h3>
+                <p>Đặt là có ngay — hệ thống xử lý đơn hàng nhanh chóng, giao tới tay bạn trong vòng 30 phút hoặc hoàn tiền.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-card__icon"><i class="fa-solid fa-star"></i></div>
+                <h3>Chất lượng chuẩn vị</h3>
+                <p>Bếp trưởng với hơn 10 năm kinh nghiệm, mỗi món ăn đều được kiểm tra hương vị trước khi giao đến khách hàng.</p>
+            </div>
+            <div class="why-card">
+                <div class="why-card__icon"><i class="fa-solid fa-headset"></i></div>
+                <h3>Hỗ trợ 24/7</h3>
+                <p>Đội ngũ chăm sóc khách hàng luôn sẵn sàng lắng nghe và giải đáp mọi thắc mắc của bạn bất cứ lúc nào.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== POPULAR CATEGORIES ===== -->
+<section class="categories-section" aria-labelledby="cat-title">
+    <div class="categories-section__inner">
+        <div class="categories-section__header">
+            <p class="why-section__eyebrow">Khám phá thực đơn</p>
+            <h2 id="cat-title">Danh Mục <span class="text-gold">Nổi Bật</span></h2>
+        </div>
+        <div class="cat-grid">
+            <a class="cat-card" asp-controller="Home" asp-action="Menu">
+                <div class="cat-card__icon"><i class="fa-solid fa-bowl-rice"></i></div>
+                <span>Cơm & Mì</span>
+            </a>
+            <a class="cat-card" asp-controller="Home" asp-action="Menu">
+                <div class="cat-card__icon"><i class="fa-solid fa-burger"></i></div>
+                <span>Burger & Sandwich</span>
+            </a>
+            <a class="cat-card" asp-controller="Home" asp-action="Menu">
+                <div class="cat-card__icon"><i class="fa-solid fa-shrimp"></i></div>
+                <span>Hải sản</span>
+            </a>
+            <a class="cat-card" asp-controller="Home" asp-action="Menu">
+                <div class="cat-card__icon"><i class="fa-solid fa-leaf"></i></div>
+                <span>Salad & Cuốn</span>
+            </a>
+            <a class="cat-card" asp-controller="Home" asp-action="Menu">
+                <div class="cat-card__icon"><i class="fa-solid fa-cake-candles"></i></div>
+                <span>Tráng miệng</span>
+            </a>
+            <a class="cat-card" asp-controller="Home" asp-action="Menu">
+                <div class="cat-card__icon"><i class="fa-solid fa-mug-hot"></i></div>
+                <span>Đồ uống</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== POPULAR DISHES SHOWCASE ===== -->
+<section class="showcase-section" aria-labelledby="showcase-title">
+    <div class="showcase-section__inner">
+        <div class="showcase-section__header">
+            <p class="why-section__eyebrow">Được yêu thích nhất</p>
+            <h2 id="showcase-title">Món Ăn <span class="text-gold">Đặc Sắc</span></h2>
+        </div>
+        <div class="showcase-grid">
+            <div class="showcase-card">
+                <div class="showcase-card__img-wrap">
+                    <img src="~/images/com-chien-hai-san-300x300.png" alt="Cơm chiên hải sản" loading="lazy" />
+                    <span class="showcase-card__badge">🔥 Bán chạy</span>
+                </div>
+                <div class="showcase-card__body">
+                    <p class="showcase-card__cat">Cơm & Mì</p>
+                    <h3>Cơm chiên hải sản</h3>
+                    <p class="showcase-card__desc">Cơm chiên giòn thơm với tôm, mực tươi và rau củ đặc trưng — hương vị khó quên.</p>
+                    <div class="showcase-card__footer">
+                        <span class="price-current">85.000 đ</span>
+                        <a class="btn-gold btn-gold--sm" asp-controller="Home" asp-action="Menu">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="showcase-card">
+                <div class="showcase-card__img-wrap">
+                    <img src="~/images/ca-hoi-ap-chao-sot-cay-300x300.png" alt="Cá hồi áp chảo" loading="lazy" />
+                    <span class="showcase-card__badge">⭐ Đặc biệt</span>
+                </div>
+                <div class="showcase-card__body">
+                    <p class="showcase-card__cat">Hải sản</p>
+                    <h3>Cá hồi áp chảo sốt cay</h3>
+                    <p class="showcase-card__desc">Phi lê cá hồi Na Uy tươi, áp chảo vàng giòn với sốt cay đặc biệt của LjruiFood.</p>
+                    <div class="showcase-card__footer">
+                        <span class="price-current">120.000 đ</span>
+                        <a class="btn-gold btn-gold--sm" asp-controller="Home" asp-action="Menu">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+            <div class="showcase-card">
+                <div class="showcase-card__img-wrap">
+                    <img src="~/images/tom-dua-nuong-300x300.png" alt="Tôm dừa nướng" loading="lazy" />
+                    <span class="showcase-card__badge">🆕 Mới</span>
+                </div>
+                <div class="showcase-card__body">
+                    <p class="showcase-card__cat">Hải sản</p>
+                    <h3>Tôm dừa nướng</h3>
+                    <p class="showcase-card__desc">Tôm tươi nướng trên than hoa, ướp nước cốt dừa thơm béo — món ngon của mùa hè.</p>
+                    <div class="showcase-card__footer">
+                        <span class="price-current">95.000 đ</span>
+                        <a class="btn-gold btn-gold--sm" asp-controller="Home" asp-action="Menu">Đặt ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:40px">
+            <a class="btn-outline" asp-controller="Home" asp-action="Menu">Xem toàn bộ thực đơn &nbsp;<i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PROMO BANNER ===== -->
+<section class="promo-banner" aria-label="Khuyến mãi">
+    <div class="promo-banner__inner">
+        <div class="promo-banner__content">
+            <span class="promo-banner__tag">Ưu đãi đặc biệt</span>
+            <h2>Đặt hàng lần đầu — Giảm ngay <span class="text-gold">20%</span></h2>
+            <p>Đăng ký tài khoản và sử dụng mã <strong>LJRUI20</strong> khi thanh toán để nhận ưu đãi hấp dẫn nhất từ chúng tôi.</p>
+            <div class="promo-banner__actions">
+                <a class="btn-gold" asp-controller="Account" asp-action="DangKy">Đăng ký ngay</a>
+                <a class="btn-outline" asp-controller="Home" asp-action="Menu">Xem thực đơn</a>
+            </div>
+        </div>
+        <div class="promo-banner__deco" aria-hidden="true">
+            <i class="fa-solid fa-percent"></i>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PROCESS STEPS ===== -->
+<section class="process-section" aria-labelledby="process-title">
+    <div class="process-section__inner">
+        <div class="why-section__header">
+            <p class="why-section__eyebrow">Quy trình đặt hàng</p>
+            <h2 id="process-title">Chỉ <span class="text-gold">3 Bước</span> Đơn Giản</h2>
+        </div>
+        <div class="process-grid">
+            <div class="process-step">
+                <div class="process-step__num">01</div>
+                <div class="process-step__icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                <h3>Chọn món yêu thích</h3>
+                <p>Duyệt qua thực đơn phong phú, lọc theo danh mục và thêm vào giỏ hàng của bạn.</p>
+            </div>
+            <div class="process-connector" aria-hidden="true"></div>
+            <div class="process-step">
+                <div class="process-step__num">02</div>
+                <div class="process-step__icon"><i class="fa-solid fa-credit-card"></i></div>
+                <h3>Thanh toán nhanh chóng</h3>
+                <p>Điền địa chỉ giao hàng, kiểm tra đơn hàng và xác nhận thanh toán chỉ trong vài giây.</p>
+            </div>
+            <div class="process-connector" aria-hidden="true"></div>
+            <div class="process-step">
+                <div class="process-step__num">03</div>
+                <div class="process-step__icon"><i class="fa-solid fa-truck-fast"></i></div>
+                <h3>Nhận hàng tại nhà</h3>
+                <p>Đội ngũ giao hàng của chúng tôi sẽ mang món ăn nóng hổi đến tận tay bạn nhanh nhất có thể.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== TESTIMONIAL MINI ===== -->
+<section class="testimonial-section" aria-labelledby="testimonial-title">
+    <div class="testimonial-section__inner">
+        <h2 id="testimonial-title">Khách Hàng Nói Gì <span class="text-gold">Về Chúng Tôi?</span></h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-card__stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-card__text">"Cơm chiên hải sản ngon tuyệt vời! Giao hàng nhanh, còn nóng hổi khi nhận được. Sẽ tiếp tục ủng hộ LjruiFood!"</p>
+                <div class="testimonial-card__author">
+                    <div class="testimonial-card__avatar">A</div>
+                    <div>
+                        <strong>Anh Kiệt</strong>
+                        <span>Khách hàng thân thiết</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-card__stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-card__text">"Thực đơn đa dạng, giá cả hợp lý. Tôi đặc biệt thích món tôm dừa nướng — đậm đà, thơm ngon khó quên!"</p>
+                <div class="testimonial-card__author">
+                    <div class="testimonial-card__avatar">M</div>
+                    <div>
+                        <strong>Minh Châu</strong>
+                        <span>Sinh viên đại học</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-card__stars">⭐⭐⭐⭐⭐</div>
+                <p class="testimonial-card__text">"Đặt hàng qua website rất dễ dàng, có thể theo dõi trạng thái đơn hàng. Dịch vụ chăm sóc khách hàng nhiệt tình!"</p>
+                <div class="testimonial-card__author">
+                    <div class="testimonial-card__avatar">T</div>
+                    <div>
+                        <strong>Thu Hà</strong>
+                        <span>Nhân viên văn phòng</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align:center;margin-top:40px">
+            <a class="btn-outline" asp-controller="Home" asp-action="Review">Xem tất cả đánh giá &nbsp;<i class="fa-solid fa-arrow-right"></i></a>
         </div>
     </div>
 </section>

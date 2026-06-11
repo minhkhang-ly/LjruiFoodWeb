@@ -22,7 +22,13 @@ public static class DataSeeder
             new() { Ma = 6, Ten = "Đồ Uống", Slug = "do-uong", MoTa = "Đồ uống giải khát" }
         };
         context.DanhMucs.AddRange(danhMucs);
-        await context.SaveChangesAsync();
+        using (var transaction = await context.Database.BeginTransactionAsync())
+        {
+            await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT DanhMuc ON");
+            await context.SaveChangesAsync();
+            await context.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT DanhMuc OFF");
+            await transaction.CommitAsync();
+        }
 
         var sanPhams = new List<SanPham>
         {

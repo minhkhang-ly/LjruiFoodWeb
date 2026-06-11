@@ -61,9 +61,12 @@
             <hr>
             <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted">Hoặc đăng nhập bằng</span>
         </div>
-        <form asp-action="ExternalLogin" asp-route-returnUrl="@returnUrl" method="post" class="external-auth-form">
+        <form asp-action="ExternalLogin" asp-route-returnUrl="@returnUrl" method="post" class="external-auth-form d-flex flex-column gap-2">
             <button type="submit" name="provider" value="Google" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2">
                 <i class="fa-brands fa-google"></i> Đăng nhập với Google
+            </button>
+            <button type="submit" name="provider" value="Facebook" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2" style="border-color: #3b5998; color: #3b5998;">
+                <i class="fa-brands fa-facebook-f"></i> Đăng nhập với Facebook
             </button>
         </form>
 
