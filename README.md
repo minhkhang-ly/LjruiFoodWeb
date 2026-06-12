@@ -1,11 +1,11 @@
 # laptrinhweb
 
-Dự án demo web tĩnh **TALO Food** — ASP.NET Core MVC (`TaloFoodWeb`).
+Dự án demo web tĩnh **LJRUI Food** — ASP.NET Core MVC (`LjruiFoodWeb`).
 
 ## Chạy thử
 
 ```bash
-cd TaloFoodWeb
+cd LjruiFoodWeb
 dotnet run
 ```
 

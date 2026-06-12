@@ -1,0 +1,89 @@
+@model ProductViewModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="inner-page">
+    <nav class="mon-chi-tiet__breadcrumb">
+        <a asp-controller="Product" asp-action="List">Sản phẩm</a>
+        <span> / </span>
+        <span>@Model.Name</span>
+    </nav>
+
+    <div class="mon-chi-tiet__grid">
+        <div class="mon-chi-tiet__img-wrap">
+            <img src="@Model.ImageUrl" alt="@Model.Name" />
+        </div>
+
+        <div class="mon-chi-tiet__info">
+            <h1 class="mon-chi-tiet__title">@Model.Name</h1>
+
+            <div class="stars" aria-label="Đánh giá @Model.StarRating trên 5">
+                @for (var i = 1; i <= 5; i++)
+                {
+                    if (i <= Model.StarRating)
+                    {
+                        <i class="fa-solid fa-star"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-regular fa-star"></i>
+                    }
+                }
+                <span class="muted">(@Model.ReviewCount đánh giá)</span>
+            </div>
+
+            <div class="price-row" style="margin: 20px 0;">
+                @if (Model.OriginalPrice is { } old)
+                {
+                    <span class="price-old">@old.ToVnd()</span>
+                }
+                @if (Model.DiscountPercent is { } d)
+                {
+                    <span class="discount-badge">@d% GIẢM</span>
+                }
+                <span class="price-current">@Model.CurrentPrice.ToVnd()</span>
+            </div>
+
+            <p class="mon-chi-tiet__lead">@Model.MoTaDayDu</p>
+
+            <div class="mon-chi-tiet__block mon-chi-tiet__block--accent">
+                <h2><i class="fa-solid fa-basket-shopping"></i> Mua Hàng</h2>
+                <p>@Model.SoldCount đã bán | Còn hàng</p>
+                <div class="btn-row" style="margin-top: 16px;">
+                    <a class="btn-gold" asp-controller="Home" asp-action="ThemVaoGio" asp-route-ma="@Model.Slug">
+                        <i class="fa-solid fa-cart-plus"></i> Thêm Vào Giỏ
+                    </a>
+                    <a class="btn-outline" asp-controller="Product" asp-action="List">
+                        <i class="fa-solid fa-arrow-left"></i> Tiếp Tục Mua
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mon-chi-tiet__meta-row" style="margin-top: 32px;">
+        <div class="mon-chi-tiet__mini">
+            <h3><i class="fa-solid fa-list"></i> Thành Phần</h3>
+            <p class="mon-chi-tiet__thanhphan">@Model.ThanhPhan</p>
+        </div>
+
+        <div class="mon-chi-tiet__mini">
+            <h3><i class="fa-solid fa-globe"></i> Nguồn Gốc</h3>
+            <p>@Model.NguonGoc</p>
+        </div>
+    </div>
+
+    <div class="mon-chi-tiet__meta-row" style="margin-top: 16px;">
+        <div class="mon-chi-tiet__mini">
+            <h3><i class="fa-solid fa-fire-burner"></i> Quy Trình Chế Biến</h3>
+            <p>@Model.QuyTrinhCheBien</p>
+        </div>
+
+        <div class="mon-chi-tiet__mini">
+            <h3><i class="fa-solid fa-chart-simple"></i> Khẩu Phần & Bảo Quản</h3>
+            <p><strong>Khẩu phần:</strong> @Model.KhauPhan</p>
+            <p style="margin-top: 8px;"><strong>Bảo quản:</strong> @Model.BaoQuan</p>
+        </div>
+    </div>
+</div>

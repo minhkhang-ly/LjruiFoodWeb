@@ -1,0 +1,228 @@
+@model LjruiFoodWeb.Models.SanPham
+@{
+    ViewData["Title"] = Model.Ten + " — Chi tiết";
+}
+
+<div class="inner-page mon-chi-tiet">
+    <nav class="mon-chi-tiet__breadcrumb" aria-label="Breadcrumb">
+        <a asp-action="Menu">Thực đơn</a>
+        <span aria-hidden="true"> / </span>
+        <span>@Model.Ten</span>
+    </nav>
+
+    <div class="mon-chi-tiet__grid">
+        <div class="mon-chi-tiet__media">
+            <div class="mon-chi-tiet__img-wrap">
+                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                {
+                    <img src="@Model.HinhAnh" alt="@Model.Ten" />
+                }
+                else
+                {
+                    <img src="/images/food-default.svg" alt="@Model.Ten" />
+                }
+            </div>
+            <p class="product-card__cat" style="margin-top:16px">@(Model.DanhMuc?.Ten ?? "Món ăn")</p>
+            <div class="stars" style="margin:8px 0" aria-label="@Model.SoSaoDanhGia trên 5 sao">
+                @for (var i = 1; i <= 5; i++)
+                {
+                    if (i <= Model.SoSaoDanhGia)
+                    {
+                        <i class="fa-solid fa-star"></i>
+                    }
+                    else
+                    {
+                        <i class="fa-regular fa-star"></i>
+                    }
+                }
+                <span class="review-count">(@Model.SoLuotDanhGia đánh giá)</span>
+            </div>
+            <p style="color:var(--text-muted);font-size:0.9rem">@Model.SoLuongDaBan đã bán</p>
+            <div class="price-row" style="margin-top:12px">
+                @if (Model.GiaGoc.HasValue && Model.GiaGoc > Model.GiaHienTai)
+                {
+                    <span class="price-old">@Model.GiaGoc.Value.ToString("N0") đ</span>
+                }
+                @if (Model.PhanTramGiam > 0)
+                {
+                    <span class="discount-badge">-@Model.PhanTramGiam%</span>
+                }
+                <span class="price-current">@Model.GiaHienTai.ToString("N0") đ</span>
+            </div>
+            <div class="btn-row" style="margin-top:20px">
+                <a class="btn-gold" asp-action="ThemVaoGio" asp-route-ma="@Model.Slug">Thêm Vào Giỏ</a>
+                <a class="btn-outline" asp-action="Menu">Quay Lại Thực Đơn</a>
+            </div>
+        </div>
+
+        <div class="mon-chi-tiet__content">
+            <h1 class="mon-chi-tiet__title">@Model.Ten</h1>
+            <p class="mon-chi-tiet__lead">@Model.MoTa</p>
+
+            @if (!string.IsNullOrEmpty(Model.MoTaDayDu))
+            {
+                <section class="mon-chi-tiet__block" aria-labelledby="mtd-mota">
+                    <h2 id="mtd-mota"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Giới thiệu món</h2>
+                    <p>@Model.MoTaDayDu</p>
+                </section>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.NguonGoc))
+            {
+                <section class="mon-chi-tiet__block mon-chi-tiet__block--accent" aria-labelledby="mtd-nguon">
+                    <h2 id="mtd-nguon"><i class="fa-solid fa-seedling" aria-hidden="true"></i> Nguồn gốc nguyên liệu</h2>
+                    <p>@Model.NguonGoc</p>
+                </section>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.ThanhPhan))
+            {
+                <section class="mon-chi-tiet__block" aria-labelledby="mtd-thanhphan">
+                    <h2 id="mtd-thanhphan"><i class="fa-solid fa-list-ul" aria-hidden="true"></i> Thành phần chính</h2>
+                    <p class="mon-chi-tiet__thanhphan">@Model.ThanhPhan</p>
+                </section>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.QuyTrinhCheBien))
+            {
+                <section class="mon-chi-tiet__block" aria-labelledby="mtd-chebien">
+                    <h2 id="mtd-chebien"><i class="fa-solid fa-fire-burner" aria-hidden="true"></i> Quy trình chế biến</h2>
+                    <p>@Model.QuyTrinhCheBien</p>
+                </section>
+            }
+
+            <div class="mon-chi-tiet__meta-row">
+                @if (!string.IsNullOrEmpty(Model.KhauPhan))
+                {
+                    <section class="mon-chi-tiet__mini" aria-labelledby="mtd-khau">
+                        <h3 id="mtd-khau"><i class="fa-solid fa-bowl-food"></i> Khẩu phần</h3>
+                        <p>@Model.KhauPhan</p>
+                    </section>
+                }
+                @if (!string.IsNullOrEmpty(Model.BaoQuan))
+                {
+                    <section class="mon-chi-tiet__mini" aria-labelledby="mtd-baoquan">
+                        <h3 id="mtd-baoquan"><i class="fa-solid fa-snowflake"></i> Bảo quản</h3>
+                        <p>@Model.BaoQuan</p>
+                    </section>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .mon-chi-tiet__breadcrumb {
+        margin-bottom: 24px;
+        color: var(--text-muted);
+    }
+    
+    .mon-chi-tiet__breadcrumb a {
+        color: var(--accent);
+    }
+    
+    .mon-chi-tiet__grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        gap: 48px;
+        text-align: left;
+    }
+    
+    .mon-chi-tiet__img-wrap {
+        background: var(--bg-card);
+        border-radius: var(--radius);
+        overflow: hidden;
+        border: 1px solid var(--border);
+    }
+    
+    .mon-chi-tiet__img-wrap img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+    
+    .mon-chi-tiet__content {
+        padding-top: 8px;
+    }
+    
+    .mon-chi-tiet__title {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+    }
+    
+    .mon-chi-tiet__lead {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-bottom: 24px;
+    }
+    
+    .mon-chi-tiet__block {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin-bottom: 16px;
+    }
+    
+    .mon-chi-tiet__block h2 {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .mon-chi-tiet__block p {
+        color: var(--text-muted);
+        margin: 0;
+        line-height: 1.7;
+    }
+    
+    .mon-chi-tiet__block--accent {
+        border-color: var(--accent);
+        background: linear-gradient(135deg, var(--bg-card), rgba(212,168,83,0.1));
+    }
+    
+    .mon-chi-tiet__thanhphan {
+        white-space: pre-line;
+    }
+    
+    .mon-chi-tiet__meta-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
+    }
+    
+    .mon-chi-tiet__mini {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+    }
+    
+    .mon-chi-tiet__mini h3 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-light);
+    }
+    
+    .mon-chi-tiet__mini p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: .9rem;
+    }
+    
+    @@media (max-width: 768px) {
+        .mon-chi-tiet__grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .mon-chi-tiet__meta-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

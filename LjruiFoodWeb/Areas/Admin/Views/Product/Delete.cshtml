@@ -1,0 +1,37 @@
+@model LjruiFoodWeb.Models.SanPham
+
+@{
+    ViewData["Title"] = "Xóa Sản Phẩm";
+}
+
+<div class="container my-4">
+    <h2>Xóa Sản Phẩm</h2>
+    <h3 class="text-danger">Bạn có chắc chắn muốn xóa sản phẩm này không?</h3>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-3">Tên sản phẩm</dt>
+            <dd class="col-sm-9">@Model.Ten</dd>
+            
+            <dt class="col-sm-3">Giá hiện tại</dt>
+            <dd class="col-sm-9">@Model.GiaHienTai.ToString("N0") VNĐ</dd>
+            
+            <dt class="col-sm-3">Danh mục</dt>
+            <dd class="col-sm-9">@(Model.DanhMuc?.Ten ?? "Không có")</dd>
+            
+            <dt class="col-sm-3">Hình ảnh</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.HinhAnh))
+                {
+                    <img src="~/images/@Model.HinhAnh" alt="@Model.Ten" style="max-height: 150px;" />
+                }
+            </dd>
+        </dl>
+        
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Ma" />
+            <button type="submit" class="btn btn-danger">Xóa Sản Phẩm</button>
+            <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+        </form>
+    </div>
+</div>

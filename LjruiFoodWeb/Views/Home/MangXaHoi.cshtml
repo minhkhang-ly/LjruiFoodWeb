@@ -1,0 +1,53 @@
+@model string
+@{
+    ViewData["Title"] = "Mạng xã hội";
+    var k = Model ?? "tong-quan";
+}
+
+<div class="inner-page">
+    @switch (k)
+    {
+        case "facebook":
+            <h1><i class="fa-brands fa-facebook" style="color:var(--accent)"></i> Facebook — LjruiFood</h1>
+            <p class="lead" style="color:var(--text-muted)">Theo dõi fanpage để nhận ưu đãi, minigame và livestream món mới.</p>
+            <div class="contact-card" style="margin-top:20px">
+                <p>Đây là trang giới thiệu kênh Facebook (demo). Liên kết thật sẽ dẫn tới fanpage chính thức khi bạn triển khai.</p>
+                <a class="btn-gold" asp-action="Contact">Quay Lại Liên Hệ</a>
+            </div>
+            break;
+        case "twitter":
+            <h1><i class="fa-brands fa-twitter" style="color:var(--accent)"></i> X (Twitter) — LjruiFood</h1>
+            <p class="lead" style="color:var(--text-muted)">Cập nhật nhanh menu theo ngày, hình ảnh behind-the-scene bếp.</p>
+            <div class="contact-card" style="margin-top:20px">
+                <p>Trang demo cho kênh X/Twitter. Bạn có thể thay bằng URL ngoài khi go-live.</p>
+                <a class="btn-outline" asp-action="Contact">Quay Lại Liên Hệ</a>
+            </div>
+            break;
+        case "instagram":
+            <h1><i class="fa-brands fa-instagram" style="color:var(--accent)"></i> Instagram — LjruiFood</h1>
+            <p class="lead" style="color:var(--text-muted)">Reels món ăn, story khuyến mãi và tag khách hàng.</p>
+            <div class="contact-card" style="margin-top:20px">
+                <p>Trang demo Instagram. Nội dung ảnh/video sẽ được liên kết từ tài khoản IG chính thức.</p>
+                <a class="btn-outline" asp-action="Contact">Quay Lại Liên Hệ</a>
+            </div>
+            break;
+        case "youtube":
+            <h1><i class="fa-brands fa-youtube" style="color:var(--accent)"></i> YouTube — LjruiFood</h1>
+            <p class="lead" style="color:var(--text-muted)">Video công thức nhanh, review combo và hướng dẫn đặt món.</p>
+            <div class="contact-card" style="margin-top:20px">
+                <p>Trang demo YouTube. Kênh thật có thể nhúng playlist hoặc nút đăng ký.</p>
+                <a class="btn-outline" asp-action="Contact">Quay Lại Liên Hệ</a>
+            </div>
+            break;
+        default:
+            <h1>Mạng Xã Hội LjruiFood</h1>
+            <p class="lead" style="color:var(--text-muted)">Chọn kênh bạn muốn xem (trang demo cùng giao diện tối).</p>
+            <div class="mxh-grid">
+                <a class="mxh-card" asp-action="MangXaHoi" asp-route-kenh="facebook"><i class="fa-brands fa-facebook-f"></i>Facebook</a>
+                <a class="mxh-card" asp-action="MangXaHoi" asp-route-kenh="twitter"><i class="fa-brands fa-twitter"></i>X / Twitter</a>
+                <a class="mxh-card" asp-action="MangXaHoi" asp-route-kenh="instagram"><i class="fa-brands fa-instagram"></i>Instagram</a>
+                <a class="mxh-card" asp-action="MangXaHoi" asp-route-kenh="youtube"><i class="fa-brands fa-youtube"></i>YouTube</a>
+            </div>
+            break;
+    }
+</div>

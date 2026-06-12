@@ -1,0 +1,62 @@
+@using Microsoft.AspNetCore.Identity
+@using LjruiFoodWeb.Models
+@inject SignInManager<NguoiDung> SignInManager
+@inject UserManager<NguoiDung> UserManager
+@{
+    var isLoggedIn = SignInManager.IsSignedIn(User);
+    var userName = "";
+    if (isLoggedIn)
+    {
+        var user = await UserManager.GetUserAsync(User);
+        userName = user?.HoTen ?? User.Identity?.Name ?? "";
+    }
+}
+@if (isLoggedIn)
+{
+    <div class="user-menu" id="user-menu">
+        <button class="user-menu__trigger" onclick="toggleUserMenu()">
+            <span class="user-avatar-sm">@(userName.Length > 0 ? userName.Substring(0, 1).ToUpper() : "U")</span>
+            <span class="user-menu__name">@userName</span>
+            <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="user-menu__dropdown" id="user-dropdown">
+            <div class="user-menu__hello">
+                <strong>@userName</strong>
+                <span>Khách hàng</span>
+            </div>
+            <div class="user-menu__divider"></div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="user-menu__item text-danger" asp-area="Admin" asp-controller="Product" asp-action="Index">
+                    <i class="fa-solid fa-box"></i> QL Sản phẩm
+                </a>
+                <a class="user-menu__item text-danger" asp-area="Admin" asp-controller="DanhMuc" asp-action="Index">
+                    <i class="fa-solid fa-list"></i> QL Danh mục
+                </a>
+                <a class="user-menu__item text-danger" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                    <i class="fa-solid fa-truck"></i> QL Đơn hàng
+                </a>
+                <div class="user-menu__divider"></div>
+            }
+            <a class="user-menu__item" asp-controller="Order" asp-action="Index">
+                <i class="fa-solid fa-receipt"></i> Đơn hàng của tôi
+            </a>
+            <a class="user-menu__item" asp-controller="Home" asp-action="HoSo">
+                <i class="fa-solid fa-user-pen"></i> Hồ sơ
+            </a>
+            <div class="user-menu__divider"></div>
+            <form asp-controller="Account" asp-action="DangXuat" method="post" class="user-menu__logout-form">
+                <button type="submit" class="user-menu__item user-menu__item--logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                </button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="auth-btns">
+        <a class="btn-outline btn-outline--sm" asp-controller="Account" asp-action="DangNhap">Đăng nhập</a>
+        <a class="btn-gold btn-gold--sm" asp-controller="Account" asp-action="DangKy">Đăng ký</a>
+    </div>
+}

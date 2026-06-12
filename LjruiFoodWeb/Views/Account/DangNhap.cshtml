@@ -1,0 +1,88 @@
+@model LoginVM
+@{
+    ViewData["Title"] = "Đăng nhập";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-card__header">
+            <a class="auth-logo" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logo-ljruifood.svg" width="160" height="50" alt="LjruiFood" />
+            </a>
+            <h1>Chào Mừng Trở Lại</h1>
+            <p>Đăng nhập để tiếp tục đặt hàng</p>
+        </div>
+
+        @if (TempData["ThongBao"] is string thongBao)
+        {
+            <div class="flash-msg">@thongBao</div>
+        }
+
+        <form asp-action="DangNhap" method="post" class="auth-form">
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+            <div asp-validation-summary="ModelOnly" class="field-error"></div>
+
+            <div class="field">
+                <label asp-for="UserNameOrEmail">
+                    <i class="fa-solid fa-user"></i> Tên đăng nhập / Email
+                </label>
+                <input asp-for="UserNameOrEmail" placeholder="Nhập tên đăng nhập hoặc email" autocomplete="username" />
+                <span asp-validation-for="UserNameOrEmail" class="field-error"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="MatKhau">
+                    <i class="fa-solid fa-lock"></i> Mật khẩu
+                </label>
+                <div class="field__password">
+                    <input asp-for="MatKhau" id="password-field" placeholder="Nhập mật khẩu" autocomplete="current-password" />
+                    <button type="button" class="toggle-pass" onclick="togglePassword()">
+                        <i class="fa-solid fa-eye" id="eye-icon"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="MatKhau" class="field-error"></span>
+            </div>
+
+            <div class="field field--row">
+                <label class="checkbox-label">
+                    <input asp-for="GhiNho" />
+                    <span class="checkmark"></span>
+                    Ghi nhớ đăng nhập
+                </label>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                <i class="fa-solid fa-right-to-bracket"></i> Đăng Nhập
+            </button>
+        </form>
+
+        <div class="auth-divider mt-4 mb-3 text-center position-relative">
+            <hr>
+            <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted">Hoặc đăng nhập bằng</span>
+        </div>
+        <form asp-action="ExternalLogin" asp-route-returnUrl="@returnUrl" method="post" class="external-auth-form">
+            <button type="submit" name="provider" value="Google" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2">
+                <i class="fa-brands fa-google"></i> Đăng nhập với Google
+            </button>
+        </form>
+
+        <div class="auth-card__footer mt-4">
+            <p>Chưa có tài khoản? <a asp-action="DangKy" asp-route-returnUrl="@returnUrl">Đăng ký ngay</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        var field = document.getElementById('password-field');
+        var icon = document.getElementById('eye-icon');
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            field.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+</script>

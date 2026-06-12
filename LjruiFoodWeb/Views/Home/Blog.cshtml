@@ -1,0 +1,28 @@
+@{
+    ViewData["Title"] = "Blog";
+    var bai = new[]
+    {
+        new { TieuDe = "Mẹo giữ độ giòn cho khoai tây chiên tại nhà", Ngay = "02/05/2026", TomTat = "Chọn loại khoai, ngâm nước, chiên hai lần và rắc chút muối đúng lúc — bài viết demo cho LjruiFood." },
+        new { TieuDe = "Pha cà phê sữa đá cân bằng vị đắng – ngọt", Ngay = "28/04/2026", TomTat = "Tỉ lệ cà phê, sữa đặc và đá; cách khuấy để không tách lớp." },
+        new { TieuDe = "Combo gia đình tiết kiệm cuối tuần", Ngay = "15/04/2026", TomTat = "Gợi ý kết hợp burger, gà rán và nước ép cho nhóm 3–4 người." }
+    };
+}
+
+<div class="inner-page">
+    <h1>Blog LjruiFood</h1>
+    <p style="color:var(--text-muted);max-width:640px">Cập nhật khuyến mãi, công thức nhanh và tin tức thực đơn. Nội dung dưới đây là bài mẫu tiếng Việt cho bản demo.</p>
+
+    <div class="review-grid" style="margin-top:28px">
+        @foreach (var b in bai)
+        {
+            <article class="review-card" style="text-align:left">
+                <p style="margin:0 0 8px;color:var(--accent);font-size:0.8rem;font-weight:800">@b.Ngay</p>
+                <h2 style="margin:0 0 10px;font-size:1.1rem">@b.TieuDe</h2>
+                <p style="margin:0;color:var(--text-muted);font-size:0.92rem;line-height:1.5">@b.TomTat</p>
+                <div style="margin-top:14px">
+                    <a class="btn-outline btn-gold--sm" asp-action="Menu">Đặt Món Liên Quan</a>
+                </div>
+            </article>
+        }
+    </div>
+</div>

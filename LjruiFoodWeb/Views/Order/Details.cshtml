@@ -1,0 +1,88 @@
+@model DonHangVM
+@{
+    ViewData["Title"] = $"Đơn hàng #{Model.Ma:D5}";
+}
+
+<div class="inner-page order-detail-page">
+    <div class="order-detail__back">
+        <a asp-action="Index" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại danh sách đơn hàng
+        </a>
+    </div>
+
+    <div class="order-detail__header">
+        <div>
+            <h1>Đơn Hàng <span>#@Model.Ma.ToString("D5")</span></h1>
+            <p class="order-date">Đặt ngày @Model.NgayDatHang.ToString("dd/MM/yyyy") lúc @Model.NgayDatHang.ToString("HH:mm")</p>
+        </div>
+        <div class="status-badge status-badge--@Model.TrangThai.ToLower()">
+            @Model.TrangThai switch
+            {
+                "ChoXacNhan" => <text><i class="fa-solid fa-clock"></i> Chờ xác nhận</text>,
+                "DaXacNhan" => <text><i class="fa-solid fa-check"></i> Đã xác nhận</text>,
+                "DangGiao" => <text><i class="fa-solid fa-truck-fast"></i> Đang giao</text>,
+                "HoanThanh" => <text><i class="fa-solid fa-circle-check"></i> Hoàn thành</text>,
+                "DaHuy" => <text><i class="fa-solid fa-xmark"></i> Đã hủy</text>,
+                _ => <text>@Model.TrangThai</text>
+            }
+        </div>
+    </div>
+
+    <div class="order-detail__layout">
+        @* ===== THÔNG TIN GIAO HÀNG ===== *@
+        <div class="order-info-card">
+            <h2><i class="fa-solid fa-truck"></i> Thông Tin Giao Hàng</h2>
+            <dl class="info-list">
+                <dt>Người nhận</dt>
+                <dd>@Model.HoTen</dd>
+                <dt>Điện thoại</dt>
+                <dd>@Model.SoDienThoai</dd>
+                @if (!string.IsNullOrEmpty(Model.Email))
+                {
+                    <dt>Email</dt>
+                    <dd>@Model.Email</dd>
+                }
+                <dt>Địa chỉ</dt>
+                <dd>@Model.DiaChiGiaoHang</dd>
+                @if (!string.IsNullOrEmpty(Model.GhiChu))
+                {
+                    <dt>Ghi chú</dt>
+                    <dd>@Model.GhiChu</dd>
+                }
+            </dl>
+        </div>
+
+        @* ===== DANH SÁCH MÓN ===== *@
+        <div class="order-items-card">
+            <h2><i class="fa-solid fa-list-check"></i> Chi Tiết Đơn Hàng (@Model.ChiTiet.Count món)</h2>
+            <div class="order-items-list">
+                @foreach (var item in Model.ChiTiet)
+                {
+                    <div class="order-line">
+                        <div class="order-line__thumb">
+                            @if (!string.IsNullOrEmpty(item.HinhAnh))
+                            {
+                                <img src="@item.HinhAnh" alt="@item.TenSanPham" />
+                            }
+                            else
+                            {
+                                <div class="thumb-placeholder"><i class="fa-solid fa-burger"></i></div>
+                            }
+                        </div>
+                        <div class="order-line__info">
+                            <strong>@item.TenSanPham</strong>
+                            <span class="order-line__qty">@item.SoLuong x @item.DonGia.ToVnd()</span>
+                        </div>
+                        <div class="order-line__sub">
+                            @item.ThanhTien.ToVnd()
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="order-items-total">
+                <span>Tổng cộng</span>
+                <strong>@Model.TongTien.ToVnd()</strong>
+            </div>
+        </div>
+    </div>
+</div>

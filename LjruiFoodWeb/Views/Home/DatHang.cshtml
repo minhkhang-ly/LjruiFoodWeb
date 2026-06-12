@@ -1,0 +1,100 @@
+@model ThanhToanVM
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<div class="inner-page checkout-page">
+    <h1>Xác Nhận Thanh Toán</h1>
+    <p class="page-desc">Vui lòng kiểm tra thông tin trước khi xác nhận đặt hàng</p>
+
+    @if (TempData["ThongBao"] is string tb)
+    {
+        <div class="flash-msg">@tb</div>
+    }
+
+    <div class="checkout-layout">
+        @* ===== FORM THÔNG TIN ===== *@
+        <div class="checkout-form-wrap">
+            <form asp-action="DatHang" method="post" class="checkout-form">
+                <div asp-validation-summary="ModelOnly" class="field-error"></div>
+
+                <h2><i class="fa-solid fa-user"></i> Thông Tin Người Nhận</h2>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label asp-for="HoTen">
+                            <i class="fa-solid fa-user-pen"></i> Họ và tên
+                        </label>
+                        <input asp-for="HoTen" placeholder="Nguyễn Văn A" autocomplete="name" />
+                        <span asp-validation-for="HoTen" class="field-error"></span>
+                    </div>
+
+                    <div class="field">
+                        <label asp-for="SoDienThoai">
+                            <i class="fa-solid fa-phone"></i> Số điện thoại
+                        </label>
+                        <input asp-for="SoDienThoai" type="tel" placeholder="0901234567" autocomplete="tel" />
+                        <span asp-validation-for="SoDienThoai" class="field-error"></span>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Email">
+                        <i class="fa-solid fa-envelope"></i> Email (nhận thông báo)
+                    </label>
+                    <input asp-for="Email" type="email" placeholder="email@example.com" autocomplete="email" />
+                    <span asp-validation-for="Email" class="field-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="DiaChiGiaoHang">
+                        <i class="fa-solid fa-location-dot"></i> Địa chỉ giao hàng
+                    </label>
+                    <input asp-for="DiaChiGiaoHang" placeholder="123 Đường ABC, Phường X, Quận Y, TP.HCM" />
+                    <span asp-validation-for="DiaChiGiaoHang" class="field-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="GhiChu">
+                        <i class="fa-solid fa-comment"></i> Ghi chú (tùy chọn)
+                    </label>
+                    <textarea asp-for="GhiChu" rows="3" placeholder="Ví dụ: Giao giờ hành chính, gọi trước khi giao..."></textarea>
+                    <span asp-validation-for="GhiChu" class="field-error"></span>
+                </div>
+
+                <button type="submit" class="btn-gold btn-checkout">
+                    <i class="fa-solid fa-bag-shopping"></i> Xác Nhận Đặt Hàng
+                </button>
+
+                <div class="checkout-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Đây là đơn hàng demo — không thu tiền thật. Giỏ hàng sẽ được xóa sau khi đặt.
+                </div>
+            </form>
+        </div>
+
+        @* ===== TÓM TẮT ĐƠN ===== *@
+        <div class="checkout-summary">
+            <h2><i class="fa-solid fa-receipt"></i> Tóm Tắt Đơn Hàng</h2>
+            <div class="checkout-items">
+                @foreach (var item in Model.GioHang)
+                {
+                    <div class="checkout-item">
+                        <div class="checkout-item__info">
+                            <i class="fa-solid fa-burger"></i>
+                            <span>@item.Ten <strong>x @item.SoLuong</strong></span>
+                        </div>
+                        <span class="checkout-item__price">@item.ThanhTien.ToVnd()</span>
+                    </div>
+                }
+            </div>
+            <div class="checkout-summary__total">
+                <span>Tổng cộng</span>
+                <strong>@Model.TongTien.ToVnd()</strong>
+            </div>
+            <a asp-action="GioHang" class="edit-cart-link">
+                <i class="fa-solid fa-pen"></i> Sửa giỏ hàng
+            </a>
+        </div>
+    </div>
+</div>

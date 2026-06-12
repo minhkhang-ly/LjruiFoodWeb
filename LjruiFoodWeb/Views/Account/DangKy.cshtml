@@ -1,0 +1,137 @@
+@model RegisterVM
+@{
+    ViewData["Title"] = "Đăng ký";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+}
+
+<div class="auth-page">
+    <div class="auth-card">
+        <div class="auth-card__header">
+            <a class="auth-logo" asp-controller="Home" asp-action="Index">
+                <img src="~/images/logo-ljruifood.svg" width="160" height="50" alt="LjruiFood" />
+            </a>
+            <h1>Tạo Tài Khoản Mới</h1>
+            <p>Đăng ký để đặt hàng nhanh chóng</p>
+        </div>
+
+        <form asp-action="DangKy" method="post" class="auth-form">
+            <input type="hidden" name="returnUrl" value="@returnUrl" />
+            <div asp-validation-summary="ModelOnly" class="field-error"></div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label asp-for="HoTen">
+                        <i class="fa-solid fa-user-pen"></i> Họ và tên
+                    </label>
+                    <input asp-for="HoTen" placeholder="Nguyễn Văn A" autocomplete="name" />
+                    <span asp-validation-for="HoTen" class="field-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="UserName">
+                        <i class="fa-solid fa-at"></i> Tên đăng nhập
+                    </label>
+                    <input asp-for="UserName" placeholder="nguyenvana" autocomplete="username" />
+                    <span asp-validation-for="UserName" class="field-error"></span>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label asp-for="Email">
+                        <i class="fa-solid fa-envelope"></i> Email
+                    </label>
+                    <input asp-for="Email" type="email" placeholder="email@example.com" autocomplete="email" />
+                    <span asp-validation-for="Email" class="field-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="SoDienThoai">
+                        <i class="fa-solid fa-phone"></i> Số điện thoại
+                    </label>
+                    <input asp-for="SoDienThoai" type="tel" placeholder="0901234567" autocomplete="tel" />
+                    <span asp-validation-for="SoDienThoai" class="field-error"></span>
+                </div>
+            </div>
+
+            <div class="field">
+                <label asp-for="DiaChi">
+                    <i class="fa-solid fa-location-dot"></i> Địa chỉ giao hàng
+                </label>
+                <input asp-for="DiaChi" placeholder="123 Đường ABC, Phường X, Quận Y, TP.HCM" />
+                <span asp-validation-for="DiaChi" class="field-error"></span>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label asp-for="MatKhau">
+                        <i class="fa-solid fa-lock"></i> Mật khẩu
+                    </label>
+                    <div class="field__password">
+                        <input asp-for="MatKhau" id="password-field" placeholder="Ít nhất 6 ký tự" autocomplete="new-password" />
+                        <button type="button" class="toggle-pass" onclick="togglePassword()">
+                            <i class="fa-solid fa-eye" id="eye-icon"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="MatKhau" class="field-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="XacNhanMatKhau">
+                        <i class="fa-solid fa-lock"></i> Xác nhận mật khẩu
+                    </label>
+                    <div class="field__password">
+                        <input asp-for="XacNhanMatKhau" id="confirm-password-field" placeholder="Nhập lại mật khẩu" autocomplete="new-password" />
+                        <button type="button" class="toggle-pass" onclick="toggleConfirmPassword()">
+                            <i class="fa-solid fa-eye" id="eye-icon-confirm"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="XacNhanMatKhau" class="field-error"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                <i class="fa-solid fa-user-plus"></i> Đăng Ký
+            </button>
+        </form>
+
+        <div class="auth-divider mt-4 mb-3 text-center position-relative">
+            <hr>
+            <span class="position-absolute top-50 start-50 translate-middle bg-white px-2 text-muted">Hoặc đăng ký bằng</span>
+        </div>
+        <form asp-action="ExternalLogin" asp-route-returnUrl="@returnUrl" method="post" class="external-auth-form">
+            <button type="submit" name="provider" value="Google" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2">
+                <i class="fa-brands fa-google"></i> Đăng ký với Google
+            </button>
+        </form>
+
+        <div class="auth-card__footer mt-4">
+            <p>Đã có tài khoản? <a asp-action="DangNhap" asp-route-returnUrl="@returnUrl">Đăng nhập ngay</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        var field = document.getElementById('password-field');
+        var icon = document.getElementById('eye-icon');
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            field.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+    function toggleConfirmPassword() {
+        var field = document.getElementById('confirm-password-field');
+        var icon = document.getElementById('eye-icon-confirm');
+        if (field.type === 'password') {
+            field.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            field.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+</script>

@@ -1,0 +1,31 @@
+@model HoSoFormModel
+@{
+    ViewData["Title"] = "Tài khoản của tôi";
+}
+
+<div class="inner-page" style="max-width:560px">
+    <h1>Hồ Sơ Khách Hàng</h1>
+    <p style="color:var(--text-muted);margin-bottom:24px">Cập nhật thông tin liên hệ (bản demo — dữ liệu không lưu vĩnh viễn trên server).</p>
+
+    <div class="contact-card">
+        <form class="form-stack" method="post" asp-action="HoSo">
+            <div asp-validation-summary="ModelOnly" class="field-error" style="margin-bottom:12px"></div>
+            <label asp-for="HoTen">Họ và tên</label>
+            <input type="text" asp-for="HoTen" placeholder="Nguyễn Văn A" />
+            <span asp-validation-for="HoTen" class="field-error"></span>
+
+            <label asp-for="DienThoai" style="margin-top:14px">Số điện thoại</label>
+            <input type="text" asp-for="DienThoai" placeholder="0901234567" />
+            <span asp-validation-for="DienThoai" class="field-error"></span>
+
+            <label asp-for="Email" style="margin-top:14px">Email</label>
+            <input type="email" asp-for="Email" placeholder="ban@email.com" />
+            <span asp-validation-for="Email" class="field-error"></span>
+
+            <div class="btn-row">
+                <button type="submit" class="btn-gold">Lưu Thông Tin</button>
+                <a class="btn-outline" asp-action="GioHang">Xem Giỏ Hàng</a>
+            </div>
+        </form>
+    </div>
+</div>

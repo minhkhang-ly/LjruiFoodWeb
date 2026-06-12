@@ -1,0 +1,46 @@
+@model IEnumerable<LjruiFoodWeb.Models.SanPham>
+
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<div class="container my-4">
+    <h2>Danh sách Sản Phẩm (Admin)</h2>
+    <p>
+        <a asp-action="Add" class="btn btn-primary">Thêm sản phẩm mới</a>
+        <a asp-action="ApiManage" class="btn btn-info text-white">Quản lý qua API (Mới)</a>
+    </p>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Hình ảnh</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá hiện tại</th>
+                <th>Danh mục</th>
+                <th>Số lượng tồn</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="@item.HinhAnh" alt="@item.Ten" style="width: 80px; height: 80px; object-fit: cover;" />
+                        }
+                    </td>
+                    <td>@item.Ten</td>
+                    <td>@item.GiaHienTai.ToString("N0") VNĐ</td>
+                    <td>@(item.DanhMuc?.Ten ?? "Không có")</td>
+                    <td>@item.SoLuongTon</td>
+                    <td>
+                        <a asp-action="Update" asp-route-id="@item.Ma" class="btn btn-sm btn-warning">Sửa</a>
+                        <a asp-action="Delete" asp-route-id="@item.Ma" class="btn btn-sm btn-danger">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

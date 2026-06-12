@@ -1,0 +1,95 @@
+@model List<DonHangVM>
+@{
+    ViewData["Title"] = "Đơn hàng của tôi";
+}
+
+<div class="inner-page orders-page">
+    <h1>Đơn Hàng Của Tôi</h1>
+    <p class="page-desc">Theo dõi và quản lý các đơn hàng của bạn</p>
+
+    @if (TempData["ThongBao"] is string tb)
+    {
+        <div class="flash-msg">@tb</div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-state__icon">
+                <i class="fa-solid fa-receipt"></i>
+            </div>
+            <h3>Chưa có đơn hàng nào</h3>
+            <p>Bạn chưa đặt đơn hàng nào. Hãy khám phá thực đơn và đặt món ngay!</p>
+            <a class="btn-gold" asp-controller="Home" asp-action="Menu">
+                <i class="fa-solid fa-utensils"></i> Xem Thực Đơn
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="orders-list">
+            @foreach (var order in Model)
+            {
+                <div class="order-card">
+                    <div class="order-card__head">
+                        <div class="order-card__id">
+                            <span class="order-label">Đơn hàng</span>
+                            <strong>#@order.Ma.ToString("D5")</strong>
+                        </div>
+                        <div class="order-card__date">
+                            <span class="order-label">Ngày đặt</span>
+                            <span>@order.NgayDatHang.ToString("dd/MM/yyyy HH:mm")</span>
+                        </div>
+                        <div class="order-card__total">
+                            <span class="order-label">Tổng tiền</span>
+                            <strong>@order.TongTien.ToVnd()</strong>
+                        </div>
+                        <div class="order-card__status status--@order.TrangThai.ToLower()">
+                            @order.TrangThai switch
+                            {
+                                "ChoXacNhan" => <text><i class="fa-solid fa-clock"></i> Chờ xác nhận</text>,
+                                "DaXacNhan" => <text><i class="fa-solid fa-check"></i> Đã xác nhận</text>,
+                                "DangGiao" => <text><i class="fa-solid fa-truck-fast"></i> Đang giao</text>,
+                                "HoanThanh" => <text><i class="fa-solid fa-circle-check"></i> Hoàn thành</text>,
+                                "DaHuy" => <text><i class="fa-solid fa-xmark"></i> Đã hủy</text>,
+                                _ => <text>@order.TrangThai</text>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="order-card__items">
+                        @foreach (var item in order.ChiTiet.Take(4))
+                        {
+                            <div class="order-item-thumb">
+                                @if (!string.IsNullOrEmpty(item.HinhAnh))
+                                {
+                                    <img src="@item.HinhAnh" alt="@item.TenSanPham" />
+                                }
+                                else
+                                {
+                                    <div class="order-item-thumb__placeholder">
+                                        <i class="fa-solid fa-burger"></i>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        @if (order.ChiTiet.Count > 4)
+                        {
+                            <div class="order-item-more">+@(order.ChiTiet.Count - 4)</div>
+                        }
+                    </div>
+
+                    <div class="order-card__foot">
+                        <div class="order-card__address">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span>@order.DiaChiGiaoHang</span>
+                        </div>
+                        <a class="btn-outline btn-outline--sm" asp-action="Details" asp-route-id="@order.Ma">
+                            <i class="fa-solid fa-eye"></i> Chi tiết
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

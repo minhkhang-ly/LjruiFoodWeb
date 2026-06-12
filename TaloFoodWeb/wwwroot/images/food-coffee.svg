@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240" viewBox="0 0 200 240">
-  <rect x="48" y="52" width="84" height="120" rx="6" fill="#d7ccc8"/>
-  <rect x="52" y="56" width="76" height="112" fill="#efebe9"/>
-  <text x="90" y="125" font-family="Open Sans, Arial" font-size="14" font-weight="800" fill="#5d4037" text-anchor="middle">COFFEE</text>
-  <path d="M132 70 H150 Q168 70 168 92 Q168 114 150 114 H132" fill="none" stroke="#111" stroke-width="8" stroke-linecap="round"/>
-  <path d="M40 172 H140 Q150 172 150 182 V188 Q150 198 140 198 H40 Q30 198 30 188 V182 Q30 172 40 172Z" fill="#111"/>
-  <ellipse cx="90" cy="52" rx="46" ry="14" fill="#222"/>
-  <ellipse cx="90" cy="48" rx="42" ry="10" fill="#333"/>
-</svg>

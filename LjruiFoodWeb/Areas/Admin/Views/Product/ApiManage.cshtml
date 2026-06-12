@@ -1,0 +1,188 @@
+@{
+    ViewData["Title"] = "Quản lý Sản Phẩm (API Fetch)";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Quản lý Sản Phẩm (Sử dụng API Fetch)</h2>
+        <button class="btn btn-primary" onclick="showCreateModal()">
+            <i class="fa-solid fa-plus"></i> Thêm Sản Phẩm Mới
+        </button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="productsTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mã</th>
+                    <th>Hình Ảnh</th>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Danh Mục</th>
+                    <th>Giá Hiện Tại</th>
+                    <th>Số Lượng Bán</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be loaded here via Fetch API -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Thêm / Sửa -->
+<div class="modal fade" id="productModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Thêm Sản Phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="Ma" />
+                    <div class="mb-3">
+                        <label class="form-label">Tên Sản Phẩm</label>
+                        <input type="text" class="form-control" id="Ten" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Giá Gốc</label>
+                            <input type="number" class="form-control" id="GiaGoc" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Giá Hiện Tại</label>
+                            <input type="number" class="form-control" id="GiaHienTai" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Danh Mục Mã (1-6)</label>
+                        <input type="number" class="form-control" id="DanhMucMa" value="1" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Đường Dẫn Hình Ảnh</label>
+                        <input type="text" class="form-control" id="HinhAnh" placeholder="/images/abc.jpeg" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mô Tả</label>
+                        <textarea class="form-control" id="MoTa" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveProduct()">Lưu Thay Đổi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- removed section Scripts -->
+<script>
+    const API_URL = '/api/products';
+    let productModal;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        productModal = new bootstrap.Modal(document.getElementById('productModal'));
+        loadProducts();
+    });
+
+    // Đọc (GET)
+    function loadProducts() {
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector('#productsTable tbody');
+                tbody.innerHTML = '';
+                data.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${item.ma}</td>
+                        <td><img src="${item.hinhAnh || '/images/food-default.svg'}" style="width: 50px; height: 50px; object-fit: cover;" /></td>
+                        <td>${item.ten}</td>
+                        <td>${item.danhMucMa}</td>
+                        <td>${item.giaHienTai.toLocaleString()} đ</td>
+                        <td>${item.soLuongDaBan}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick='showEditModal(${JSON.stringify(item).replace(/'/g, "&apos;")})'>Sửa</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProduct(${item.ma})">Xóa</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
+
+    function showCreateModal() {
+        document.getElementById('modalTitle').innerText = 'Thêm Sản Phẩm';
+        document.getElementById('productForm').reset();
+        document.getElementById('Ma').value = '';
+        productModal.show();
+    }
+
+    function showEditModal(item) {
+        document.getElementById('modalTitle').innerText = 'Sửa Sản Phẩm';
+        document.getElementById('Ma').value = item.ma;
+        document.getElementById('Ten').value = item.ten;
+        document.getElementById('GiaGoc').value = item.giaGoc || 0;
+        document.getElementById('GiaHienTai').value = item.giaHienTai;
+        document.getElementById('DanhMucMa').value = item.danhMucMa;
+        document.getElementById('HinhAnh').value = item.hinhAnh || '';
+        document.getElementById('MoTa').value = item.moTa || '';
+        productModal.show();
+    }
+
+    // Thêm / Sửa (POST / PUT)
+    function saveProduct() {
+        const ma = document.getElementById('Ma').value;
+        const product = {
+            ma: ma ? parseInt(ma) : 0,
+            ten: document.getElementById('Ten').value,
+            giaGoc: parseFloat(document.getElementById('GiaGoc').value),
+            giaHienTai: parseFloat(document.getElementById('GiaHienTai').value),
+            danhMucMa: parseInt(document.getElementById('DanhMucMa').value),
+            hinhAnh: document.getElementById('HinhAnh').value,
+            moTa: document.getElementById('MoTa').value
+        };
+
+        const method = ma ? 'PUT' : 'POST';
+        const url = ma ? `${API_URL}/${ma}` : API_URL;
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        })
+        .then(response => {
+            if (response.ok || response.status === 204) {
+                alert(ma ? 'Cập nhật thành công!' : 'Thêm mới thành công!');
+                productModal.hide();
+                loadProducts();
+            } else {
+                alert('Lỗi khi lưu dữ liệu!');
+            }
+        })
+        .catch(error => console.error('Error saving:', error));
+    }
+
+    // Xóa (DELETE)
+    function deleteProduct(id) {
+        if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
+            fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok || response.status === 204) {
+                    alert('Xóa thành công!');
+                    loadProducts();
+                } else {
+                    alert('Lỗi khi xóa!');
+                }
+            })
+            .catch(error => console.error('Error deleting:', error));
+        }
+    }
+</script>

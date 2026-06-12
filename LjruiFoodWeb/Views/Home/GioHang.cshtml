@@ -1,0 +1,143 @@
+@model IReadOnlyList<GioHangItemViewModel>
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    var tong = Model.Sum(x => x.ThanhTien);
+    var soMon = Model.Count;
+}
+
+<div class="inner-page cart-page">
+    <div class="cart-page__header">
+        <h1>Giỏ Hàng Của Bạn</h1>
+        @if (Model.Count > 0)
+        {
+            <p class="cart-page__count">@soMon @(soMon == 1 ? "món" : "món") trong giỏ</p>
+        }
+    </div>
+
+    @if (TempData["ThongBaoGio"] is string tb)
+    {
+        <div class="flash-msg">@tb</div>
+    }
+
+    @if (Model.Count == 0)
+    {
+        <div class="cart-empty">
+            <div class="cart-empty__icon">
+                <i class="fa-solid fa-basket-shopping"></i>
+            </div>
+            <h3>Giỏ hàng trống</h3>
+            <p>Hãy thêm món từ thực đơn để bắt đầu đặt hàng nhé!</p>
+            <a class="btn-gold" asp-action="Menu">
+                <i class="fa-solid fa-utensils"></i> Đi Tới Thực Đơn
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="cart-layout">
+            @* ===== DANH SÁCH MÓN ===== *@
+            <div class="cart-items">
+                <div class="cart-items__head">
+                    <span>Sản phẩm</span>
+                    <span>Đơn giá</span>
+                    <span>Số lượng</span>
+                    <span>Thành tiền</span>
+                </div>
+
+                @foreach (var line in Model)
+                {
+                    <div class="cart-card" data-ma="@line.Ma">
+                        <div class="cart-card__info">
+                            <div class="cart-card__thumb">
+                                <i class="fa-solid fa-burger"></i>
+                            </div>
+                            <div class="cart-card__detail">
+                                <strong class="cart-card__name">@line.Ten</strong>
+                                <span class="cart-card__price-unit">@line.DonGia.ToVnd() / món</span>
+                            </div>
+                        </div>
+
+                        <div class="cart-card__unit">
+                            @line.DonGia.ToVnd()
+                        </div>
+
+                        <div class="cart-card__qty">
+                            <a class="qty-btn qty-btn--down"
+                               asp-action="CapNhatSoLuong"
+                               asp-route-ma="@line.Ma"
+                               asp-route-soLuong="@(line.SoLuong - 1)"
+                               aria-label="Giảm">
+                                <i class="fa-solid fa-minus"></i>
+                            </a>
+                            <span class="qty-value">@line.SoLuong</span>
+                            <a class="qty-btn qty-btn--up"
+                               asp-action="CapNhatSoLuong"
+                               asp-route-ma="@line.Ma"
+                               asp-route-soLuong="@(line.SoLuong + 1)"
+                               aria-label="Tăng">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+
+                        <div class="cart-card__sub">
+                            @line.ThanhTien.ToVnd()
+                        </div>
+
+                        <a class="cart-card__remove"
+                           asp-action="XoaKhoiGio"
+                           asp-route-ma="@line.Ma"
+                           aria-label="Xóa món"
+                           onclick="return confirm('Xóa @line.Ten khỏi giỏ hàng?');">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </a>
+                    </div>
+                }
+            </div>
+
+            @* ===== TÓM TẮT ĐƠN HÀNG ===== *@
+            <div class="cart-summary">
+                <h2 class="cart-summary__title">
+                    <i class="fa-solid fa-receipt"></i> Tóm Tắt Đơn
+                </h2>
+
+                <div class="cart-summary__lines">
+                    <div class="summary-line">
+                        <span>Số món (@soMon)</span>
+                        <span>@soMon sản phẩm</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Tạm tính</span>
+                        <span>@tong.ToVnd()</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Phí giao hàng</span>
+                        <span class="free-ship">Miễn phí</span>
+                    </div>
+                </div>
+
+                <div class="cart-summary__total">
+                    <span>Tổng cộng</span>
+                    <strong>@tong.ToVnd()</strong>
+                </div>
+
+                <a class="btn-gold cart-summary__cta" asp-action="DatHang">
+                    <i class="fa-solid fa-credit-card"></i> Thanh Toán (Demo)
+                </a>
+
+                <div class="cart-summary__actions">
+                    <a asp-action="Menu" class="action-link">
+                        <i class="fa-solid fa-arrow-left"></i> Tiếp tục mua
+                    </a>
+                    <a asp-action="TimKiem" class="action-link">
+                        <i class="fa-solid fa-magnifying-glass"></i> Tìm thêm món
+                    </a>
+                </div>
+
+                <div class="cart-summary__note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Thanh toán demo sẽ xóa giỏ và ghi nhận đơn hàng giả lập — không thu tiền thật.
+                </div>
+            </div>
+        </div>
+    }
+</div>

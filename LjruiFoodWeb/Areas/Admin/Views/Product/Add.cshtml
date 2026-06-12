@@ -1,0 +1,64 @@
+@model LjruiFoodWeb.ViewModels.SanPhamViewModel
+
+@{
+    ViewData["Title"] = "Thêm Sản Phẩm";
+}
+
+<div class="container my-4">
+    <h2>Thêm Sản Phẩm Mới</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Add" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                
+                <div class="mb-3">
+                    <label asp-for="Ten" class="form-label">Tên Sản Phẩm</label>
+                    <input asp-for="Ten" class="form-control" />
+                    <span asp-validation-for="Ten" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="DanhMucMa" class="form-label">Danh Mục</label>
+                    <select asp-for="DanhMucMa" class="form-control" asp-items="ViewBag.DanhMucs">
+                        <option value="">-- Chọn danh mục --</option>
+                    </select>
+                    <span asp-validation-for="DanhMucMa" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="HinhAnhUpload" class="form-label">Hình Ảnh</label>
+                    <input asp-for="HinhAnhUpload" type="file" class="form-control" accept="image/*" />
+                    <span asp-validation-for="HinhAnhUpload" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="GiaHienTai" class="form-label">Giá Hiện Tại</label>
+                    <input asp-for="GiaHienTai" class="form-control" type="number" />
+                    <span asp-validation-for="GiaHienTai" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="SoLuongTon" class="form-label">Số Lượng Tồn</label>
+                    <input asp-for="SoLuongTon" class="form-control" type="number" />
+                    <span asp-validation-for="SoLuongTon" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="MoTa" class="form-label">Mô Tả</label>
+                    <textarea asp-for="MoTa" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="MoTa" class="text-danger"></span>
+                </div>
+                
+                <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Lưu Sản Phẩm</button>
+                    <a asp-action="Index" class="btn btn-secondary">Quay lại danh sách</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

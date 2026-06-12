@@ -1,0 +1,22 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Lỗi";
+}
+
+<div class="inner-page" style="max-width:640px">
+    <h1 style="color:#ff8a80">Đã xảy ra lỗi</h1>
+    <p style="color:var(--text-muted)">Rất tiếc, hệ thống không xử lý được yêu cầu của bạn. Vui lòng thử lại sau hoặc quay về trang chủ.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p style="font-size:0.9rem;color:var(--text-muted)">
+            <strong>Mã tham chiếu:</strong> <code style="color:var(--accent)">@Model.RequestId</code>
+        </p>
+    }
+    <div class="btn-row" style="margin-top:24px">
+        <a class="btn-gold" asp-controller="Home" asp-action="Index">Về Trang Chủ</a>
+        <a class="btn-outline" asp-controller="Home" asp-action="Contact">Liên Hệ Hỗ Trợ</a>
+    </div>
+    <p style="margin-top:28px;font-size:0.85rem;color:var(--text-muted)">
+        Khi chạy môi trường <strong>Development</strong>, bạn có thể xem chi tiết lỗi trong console hoặc log ứng dụng.
+    </p>
+</div>

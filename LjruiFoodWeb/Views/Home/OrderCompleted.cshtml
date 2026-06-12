@@ -1,0 +1,17 @@
+@model int
+@{
+    ViewData["Title"] = "Order Completed";
+}
+
+<div class="inner-page text-center py-5" style="min-height: 50vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div style="font-size: 4rem; color: #28a745; margin-bottom: 20px;">
+        <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <h2 style="color: var(--accent); margin-bottom: 20px; font-weight: bold;">Order Completed</h2>
+    <p style="font-size: 1.2rem; color: var(--text-light);">
+        Your order with ID <strong>@Model</strong> has been placed successfully.
+    </p>
+    <a asp-action="Menu" asp-controller="Home" class="btn-gold mt-4">
+        <i class="fa-solid fa-utensils"></i> Tiếp tục mua sắm
+    </a>
+</div>

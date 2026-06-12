@@ -1,0 +1,209 @@
+@model IEnumerable<LjruiFoodWeb.Models.SanPham>
+@{
+    ViewData["Title"] = "Thực đơn";
+    var pagination = ViewBag.Pagination as LjruiFoodWeb.ViewModels.PaginationViewModel;
+}
+
+<div class="inner-page">
+    <h1>THỰC ĐƠN</h1>
+    <p class="lead">Khám phá các món ngon từ LjruiFood.</p>
+
+    <!-- Bộ lọc -->
+    <form method="get" class="filter-form">
+        <div class="filter-row">
+            <select name="danhMuc" class="filter-select" asp-items="ViewBag.DanhMucs">
+                <option value="tatca">Tất cả danh mục</option>
+            </select>
+            <select name="sapXep" class="filter-select">
+                <option value="mac-dinh" selected>Mặc định</option>
+                <option value="gia-thap-cao">Giá: Thấp → Cao</option>
+                <option value="gia-cao-thap">Giá: Cao → Thấp</option>
+                <option value="ban-chay">Bán chạy nhất</option>
+                <option value="danh-gia-cao">Đánh giá cao</option>
+                <option value="moi-nhat">Mới nhất</option>
+            </select>
+            <button type="submit" class="btn-gold">Lọc</button>
+        </div>
+    </form>
+
+    <!-- Thông tin phân trang -->
+    @if (pagination != null && pagination.TotalItems > 0)
+    {
+        <p class="pagination-info">
+            Hiển thị @pagination.FromItem - @pagination.ToItem của @pagination.TotalItems món
+        </p>
+    }
+
+    <!-- Danh sách sản phẩm -->
+    @if (!Model.Any())
+    {
+        <div class="empty-state">Không có sản phẩm nào.</div>
+    }
+    else
+    {
+        <div class="product-grid product-grid--3col">
+            @foreach (var item in Model)
+            {
+                <article class="product-card">
+                    <div class="product-card__media">
+                        <span class="product-card__badge">@item.SoLuongDaBan Đã Bán</span>
+                        @if (!string.IsNullOrEmpty(item.HinhAnh))
+                        {
+                            <img src="@item.HinhAnh" alt="@item.Ten" />
+                        }
+                        else
+                        {
+                            <img src="/images/food-default.svg" alt="@item.Ten" />
+                        }
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__cat">@(item.DanhMuc?.Ten ?? "Đồ Ăn")</p>
+                        <h2 class="product-card__title">@item.Ten</h2>
+                        <div class="price-row">
+                            @if (item.GiaGoc.HasValue && item.GiaGoc > item.GiaHienTai)
+                            {
+                                <span class="price-old">@item.GiaGoc.Value.ToString("N0") đ</span>
+                            }
+                            @if (item.PhanTramGiam > 0)
+                            {
+                                <span class="discount-badge">-@item.PhanTramGiam%</span>
+                            }
+                            <span class="price-current">@item.GiaHienTai.ToString("N0") đ</span>
+                        </div>
+                        <p class="product-card__desc">@item.MoTa</p>
+                        <div class="stars">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                if (i <= item.SoSaoDanhGia)
+                                {
+                                    <i class="fa-solid fa-star"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-regular fa-star"></i>
+                                }
+                            }
+                            <span class="review-count">(@item.SoLuotDanhGia)</span>
+                        </div>
+                        <div class="btn-row">
+                            <a class="btn-gold btn-gold--sm" asp-controller="Home" asp-action="ThemVaoGio" asp-route-ma="@item.Slug">Thêm Vào Giỏ</a>
+                            <a class="btn-outline btn-outline--sm" asp-controller="Home" asp-action="ChiTietMon" asp-route-ma="@item.Slug">Chi Tiết</a>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+
+        <!-- Phân trang -->
+        @if (pagination != null && pagination.TotalPages > 1)
+        {
+            <nav class="pagination" aria-label="Phân trang">
+                @if (pagination.HasPrevious)
+                {
+                    <a class="pagination__btn" asp-controller="Product" asp-action="List"
+                       asp-route-danhMuc="@pagination.DanhMuc"
+                       asp-route-sapXep="@pagination.SapXep"
+                       asp-route-page="@(pagination.CurrentPage - 1)">
+                        <i class="fa-solid fa-chevron-left"></i> Trang trước
+                    </a>
+                }
+
+                <div class="pagination__pages">
+                    @for (var i = 1; i <= pagination.TotalPages; i++)
+                    {
+                        if (i == pagination.CurrentPage)
+                        {
+                            <span class="pagination__page pagination__page--active">@i</span>
+                        }
+                        else
+                        {
+                            <a class="pagination__page" asp-controller="Product" asp-action="List"
+                               asp-route-danhMuc="@pagination.DanhMuc"
+                               asp-route-sapXep="@pagination.SapXep"
+                               asp-route-page="@i">@i</a>
+                        }
+                    }
+                </div>
+
+                @if (pagination.HasNext)
+                {
+                    <a class="pagination__btn" asp-controller="Product" asp-action="List"
+                       asp-route-danhMuc="@pagination.DanhMuc"
+                       asp-route-sapXep="@pagination.SapXep"
+                       asp-route-page="@(pagination.CurrentPage + 1)">
+                        Trang sau <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                }
+            </nav>
+        }
+    }
+</div>
+
+<style>
+    .pagination-info {
+        color: var(--text-muted);
+        font-size: .9rem;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+    }
+
+    .pagination__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-light);
+        font-size: .9rem;
+        transition: all .25s;
+    }
+
+    .pagination__btn:hover {
+        background: var(--accent);
+        color: var(--bg-dark);
+        border-color: var(--accent);
+    }
+
+    .pagination__pages {
+        display: flex;
+        gap: 8px;
+    }
+
+    .pagination__page {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-light);
+        font-size: .95rem;
+        transition: all .25s;
+    }
+
+    .pagination__page:hover {
+        background: var(--accent);
+        color: var(--bg-dark);
+        border-color: var(--accent);
+    }
+
+    .pagination__page--active {
+        background: var(--accent);
+        color: var(--bg-dark);
+        border-color: var(--accent);
+        font-weight: 700;
+    }
+</style>

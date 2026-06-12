@@ -1,0 +1,129 @@
+@model MenuPageViewModel
+@{
+    ViewData["Title"] = "Thực đơn";
+    string PillClass(string key) =>
+        string.Equals(Model.DanhMuc, key, StringComparison.OrdinalIgnoreCase) ? "filter-pill filter-pill--active" : "filter-pill";
+}
+
+<div class="menu-page">
+    <div class="menu-toolbar">
+        <div class="filter-pills" role="tablist" aria-label="Bộ lọc danh mục">
+            <a class="@PillClass("tatca")" role="tab" asp-action="Menu" asp-route-danhMuc="tatca" asp-route-sapXep="@Model.SapXep">Tất Cả</a>
+            <a class="@PillClass("doan")" role="tab" asp-action="Menu" asp-route-danhMuc="doan" asp-route-sapXep="@Model.SapXep">Đồ Ăn</a>
+            <a class="@PillClass("douong")" role="tab" asp-action="Menu" asp-route-danhMuc="douong" asp-route-sapXep="@Model.SapXep">Đồ Uống</a>
+        </div>
+        <form class="sort-select" method="get" asp-action="Menu">
+            <input type="hidden" name="danhMuc" value="@Model.DanhMuc" />
+            <label class="visually-hidden" for="sortDefault">Sắp xếp</label>
+            <select id="sortDefault" name="sapXep" onchange="this.form.submit()">
+                @if (Model.SapXep == "mac-dinh")
+                {
+                    <option value="mac-dinh" selected>Sắp Xếp Mặc Định</option>
+                }
+                else
+                {
+                    <option value="mac-dinh">Sắp Xếp Mặc Định</option>
+                }
+                @if (Model.SapXep == "gia-tang")
+                {
+                    <option value="gia-tang" selected>Giá: Thấp → Cao</option>
+                }
+                else
+                {
+                    <option value="gia-tang">Giá: Thấp → Cao</option>
+                }
+                @if (Model.SapXep == "gia-giam")
+                {
+                    <option value="gia-giam" selected>Giá: Cao → Thấp</option>
+                }
+                else
+                {
+                    <option value="gia-giam">Giá: Cao → Thấp</option>
+                }
+                @if (Model.SapXep == "ban-chay")
+                {
+                    <option value="ban-chay" selected>Bán Chạy Nhất</option>
+                }
+                else
+                {
+                    <option value="ban-chay">Bán Chạy Nhất</option>
+                }
+            </select>
+        </form>
+    </div>
+
+    <div class="menu-layout">
+        <div class="product-grid">
+            @foreach (var p in Model.SanPham)
+            {
+                <article class="product-card">
+                    <div class="product-card__media">
+                        <span class="product-card__badge">@p.SoldCount Đã Bán</span>
+                        <img src="@p.ImageUrl" alt="@p.Name" />
+                    </div>
+                    <div class="product-card__body">
+                        <p class="product-card__cat">@p.CategoryLabel</p>
+                        <h2 class="product-card__title">@p.Name</h2>
+                        <div class="stars" aria-label="Đánh giá @p.StarRating trên 5">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                if (i <= p.StarRating)
+                                {
+                                    <i class="fa-solid fa-star"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-regular fa-star"></i>
+                                }
+                            }
+                            <span class="muted">(@p.ReviewCount)</span>
+                        </div>
+                        <div class="price-row">
+                            @if (p.OriginalPrice is { } old)
+                            {
+                                <span class="price-old">@old.ToVnd()</span>
+                            }
+                            @if (p.DiscountPercent is { } d)
+                            {
+                                <span class="discount-badge">@d%</span>
+                            }
+                            <span class="price-current">@p.CurrentPrice.ToVnd()</span>
+                        </div>
+                        <p class="product-card__desc">@p.Description</p>
+                        <div class="btn-row">
+                            <a class="btn-gold btn-gold--sm" asp-action="ThemVaoGio" asp-route-ma="@p.Slug">Thêm Vào Giỏ</a>
+                            <a class="btn-outline btn-gold--sm" asp-action="ChiTietMon" asp-route-ma="@p.Slug">Chi Tiết</a>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+
+        <aside class="search-panel" aria-label="Tìm kiếm món">
+            <form method="get" asp-action="TimKiem">
+                <div class="search-panel__field">
+                    <input type="search" name="q" placeholder="Nhập tên món, ví dụ: gà rán" autocomplete="off" />
+                    <a class="clear" asp-action="TimKiem" aria-label="Xóa từ khóa"><i class="fa-solid fa-xmark"></i></a>
+                    <button type="submit" aria-label="Tìm kiếm"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </form>
+            <div class="search-section">
+                <h3>GỢI Ý TÌM KIẾM</h3>
+                <ul class="search-list">
+                    <li><a asp-action="TimKiem" asp-route-q="Gà rán">Gà Rán Giòn</a> <span class="type">Đồ Ăn</span></li>
+                    <li><a asp-action="TimKiem" asp-route-q="Gà rán KFC">Gà Rán KFC</a> <span class="type">Combo</span></li>
+                    <li><a asp-action="TimKiem" asp-route-q="Combo gà rán">Combo Gà Rán + Khoai Tây</a> <span class="type">Combo</span></li>
+                    <li><a asp-action="TimKiem" asp-route-q="Burger gà">Combo Burger + Gà Rán</a> <span class="type">Combo</span></li>
+                </ul>
+            </div>
+            <div class="search-section">
+                <h3>MÓN ĂN PHỔ BIẾN</h3>
+                <ul class="search-list">
+                    <li><a asp-action="TimKiem" asp-route-q="Hamburger">Hamburger Bò</a> <span class="type">Đồ Ăn</span></li>
+                    <li><a asp-action="TimKiem" asp-route-q="Bún bò">Bún Bò Huế</a> <span class="type">Đồ Ăn</span></li>
+                    <li><a asp-action="TimKiem" asp-route-q="Gà rán">Gà Rán KFC</a> <span class="type">Combo</span></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>

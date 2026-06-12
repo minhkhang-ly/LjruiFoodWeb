@@ -1,0 +1,87 @@
+@using Microsoft.AspNetCore.Identity
+@using LjruiFoodWeb.Models
+@inject SignInManager<NguoiDung> SignInManager
+@inject UserManager<NguoiDung> UserManager
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var isMenuPage = string.Equals(controller, "Home", StringComparison.OrdinalIgnoreCase)
+        && (string.Equals(action, "Menu", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(action, "ChiTietMon", StringComparison.OrdinalIgnoreCase));
+    string NavOn(string act) =>
+        string.Equals(action, act, StringComparison.OrdinalIgnoreCase) ? "nav--on" : "";
+    string NavThucDonOn() =>
+        string.Equals(action, "Menu", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(action, "ChiTietMon", StringComparison.OrdinalIgnoreCase)
+            ? "nav--on" : "";
+
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LjruiFood</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div id="site-intro" class="site-intro" aria-hidden="true">
+        <div class="site-intro__inner">
+            <div class="site-intro__visual">
+                <span class="site-intro__ring" aria-hidden="true"></span>
+                <img class="site-intro__logo" src="~/images/logo-ljruifood.svg" width="200" height="72" alt="" />
+            </div>
+            <p class="site-intro__brand">LjruiFood</p>
+            <p class="site-intro__tagline">Đồ ăn nhanh · Chuẩn vị ngon</p>
+        </div>
+    </div>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="site-logo" asp-area="" asp-controller="Home" asp-action="Index" aria-label="LjruiFood">
+                <img class="site-logo__mark" src="~/images/logo-ljruifood.svg" width="180" height="56" alt="LjruiFood" />
+            </a>
+            <nav class="site-nav" aria-label="Điều hướng chính">
+                <a class="site-nav__link @NavOn("Index")" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                <a class="site-nav__link @NavOn("About")" asp-area="" asp-controller="Home" asp-action="About">Giới thiệu</a>
+                <a class="site-nav__link @NavThucDonOn()" asp-area="" asp-controller="Home" asp-action="Menu">Thực đơn</a>
+                <a class="site-nav__link @NavOn("Review")" asp-area="" asp-controller="Home" asp-action="Review">Đánh giá</a>
+                <a class="site-nav__link @NavOn("Contact")" asp-area="" asp-controller="Home" asp-action="Contact">Liên hệ</a>
+                <a class="site-nav__link @NavOn("Blog")" asp-area="" asp-controller="Home" asp-action="Blog">Blog</a>
+            </nav>
+            <div class="site-header__tools">
+                <a class="icon-btn" asp-area="" asp-controller="Home" asp-action="TimKiem" aria-label="Tìm kiếm"><i class="fa-solid fa-magnifying-glass"></i></a>
+                <a class="icon-btn" asp-area="" asp-controller="Home" asp-action="GioHang" aria-label="Giỏ hàng"><i class="fa-solid fa-cart-shopping"></i></a>
+
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </header>
+
+    <main class="site-main">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <span>&copy; @DateTime.UtcNow.Year LjruiFood — Đồ ăn nhanh và đồ uống. Bản demo giao diện.</span>
+    </footer>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function toggleUserMenu() {
+            var dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('is-open');
+        }
+        document.addEventListener('click', function(e) {
+            var menu = document.getElementById('user-menu');
+            var dropdown = document.getElementById('user-dropdown');
+            if (menu && !menu.contains(e.target)) {
+                dropdown.classList.remove('is-open');
+            }
+        });
+    </script>
+</body>
+</html>

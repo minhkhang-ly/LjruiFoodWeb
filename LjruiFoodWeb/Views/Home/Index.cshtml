@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<section class="hero" aria-label="Giới thiệu LjruiFood">
+    <div class="hero__wood" aria-hidden="true"></div>
+    <div class="hero__vignette" aria-hidden="true"></div>
+    <div class="hero__inner">
+        <div class="hero__copy">
+            <h1>ĐÓI BỤNG? ĐỪNG LO, ĐÃ CÓ LJRUI FOOD!</h1>
+            <p class="lead">Đồ ăn nhanh, chuẩn vị ngon, phục vụ tốc hành — bạn chỉ cần thưởng thức!</p>
+            <a class="btn-gold" asp-controller="Home" asp-action="Menu">Đặt Món Ngay</a>
+        </div>
+        <div class="hero__scene" aria-hidden="true">
+            <div class="hero__beans">
+                <span style="left:8%;top:18%;--r:-18deg"></span>
+                <span style="left:14%;top:62%;--r:12deg"></span>
+                <span style="left:22%;top:40%;--r:-8deg"></span>
+                <span style="left:78%;top:22%;--r:22deg"></span>
+                <span style="left:88%;top:48%;--r:-14deg"></span>
+                <span style="left:70%;top:72%;--r:6deg"></span>
+                <span style="left:40%;top:12%;--r:-4deg"></span>
+                <span style="left:52%;top:78%;--r:16deg"></span>
+            </div>
+            <img class="hero__item hero__item--coffee" src="~/images/food-coffee.svg" alt="" />
+            <img class="hero__item hero__item--fries" src="~/images/food-fries.svg" alt="" />
+            <img class="hero__item hero__item--burger" src="~/images/food-hamburger.svg" alt="" />
+            <img class="hero__item hero__item--dip" src="~/images/food-dip.svg" alt="" />
+        </div>
+    </div>
+</section>

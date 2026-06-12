@@ -1,0 +1,46 @@
+@model IEnumerable<LjruiFoodWeb.Models.DanhGia>
+@{
+    ViewData["Title"] = "Đánh giá";
+}
+
+<div class="review-page">
+    <h1 class="section-title">ĐÁNH GIÁ <span class="gold">NỔI BẬT</span></h1>
+    <p style="text-align:center;color:var(--text-muted);max-width:560px;margin:-12px auto 28px">Khách hàng chia sẻ trải nghiệm sau khi thưởng thức món tại LjruiFood.</p>
+    <div class="review-grid">
+        @foreach (var r in Model)
+        {
+            <article class="review-card">
+                <div class="review-card__head">
+                    <div class="review-avatar" aria-hidden="true">@(r.HoTen.Length > 0 ? r.HoTen[0].ToString().ToUpper() : "?")</div>
+                    <div class="review-user">
+                        <strong>@r.HoTen</strong>
+                    </div>
+                    <div class="product-chip">
+                        <i class="fa-solid fa-burger"></i>
+                        <span>@r.SanPham?.Ten</span>
+                    </div>
+                </div>
+                <p class="review-body">@r.BinhLuan</p>
+                <div class="review-footer">
+                    <div class="stars" aria-label="@r.SoSao trên 5 sao">
+                        @for (var i = 1; i <= 5; i++)
+                        {
+                            if (i <= r.SoSao)
+                            {
+                                <i class="fa-solid fa-star"></i>
+                            }
+                            else
+                            {
+                                <i class="fa-regular fa-star"></i>
+                            }
+                        }
+                    </div>
+                    <span class="review-date">@r.NgayDanhGia.ToString("dd/MM/yyyy")</span>
+                </div>
+            </article>
+        }
+    </div>
+    <div style="text-align:center;margin-top:32px">
+        <a class="btn-gold" asp-action="Menu">Đặt Món Giống Khách Hàng</a>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+@model LjruiFoodWeb.ViewModels.TimKiemViewModel
+@{
+    ViewData["Title"] = "Tìm kiếm";
+}
+
+<div class="inner-page">
+    <h1>Tìm Kiếm Món</h1>
+    <p class="lead" style="color:var(--text-muted);margin-bottom:24px">Nhập từ khóa để lọc món trong thực đơn LjruiFood.</p>
+
+    <form method="get" asp-action="TimKiem" class="search-panel" style="max-width:640px;margin-bottom:28px">
+        <div class="search-panel__field">
+            <input type="search" name="q" value="@Model.TuKhoa" placeholder="Ví dụ: pizza, cà phê, bún bò…" />
+            <a class="clear" asp-action="TimKiem" aria-label="Xóa từ khóa"><i class="fa-solid fa-xmark"></i></a>
+            <button type="submit" aria-label="Tìm"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+    </form>
+
+    @if (string.IsNullOrWhiteSpace(Model.TuKhoa))
+    {
+        <p style="color:var(--text-muted)">Chưa có từ khóa — đang hiển thị toàn bộ món.</p>
+    }
+    else
+    {
+        <p style="margin-bottom:16px">Kết quả cho: <strong style="color:var(--accent)">@Model.TuKhoa</strong> (@Model.KetQua.Count món)</p>
+    }
+
+    <div class="product-grid" style="margin-top:8px">
+        @foreach (var p in Model.KetQua)
+        {
+            <article class="product-card">
+                <div class="product-card__media">
+                    <span class="product-card__badge">@p.SoLuongDaBan Đã Bán</span>
+                    <img src="@p.HinhAnh" alt="@p.Ten" />
+                </div>
+                <div class="product-card__body">
+                    <p class="product-card__cat">@(p.DanhMuc?.Ten ?? "Đồ Ăn")</p>
+                    <h2 class="product-card__title">@p.Ten</h2>
+                    <div class="price-row">
+                        @if (p.GiaGoc.HasValue && p.GiaGoc > p.GiaHienTai)
+                        {
+                            <span class="price-old">@p.GiaGoc.Value.ToString("N0") đ</span>
+                        }
+                        @if (p.PhanTramGiam > 0)
+                        {
+                            <span class="discount-badge">@p.PhanTramGiam%</span>
+                        }
+                        <span class="price-current">@p.GiaHienTai.ToString("N0") đ</span>
+                    </div>
+                    <p class="product-card__desc">@p.MoTa</p>
+                    <div class="btn-row">
+                        <a class="btn-gold btn-gold--sm" asp-action="ThemVaoGio" asp-route-ma="@p.Slug">Thêm Vào Giỏ</a>
+                        <a class="btn-outline btn-gold--sm" asp-action="ChiTietMon" asp-route-ma="@p.Slug">Chi Tiết</a>
+                        <a class="btn-outline btn-gold--sm" asp-action="Menu">Về Thực Đơn</a>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+</div>
